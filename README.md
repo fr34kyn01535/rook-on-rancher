@@ -16,14 +16,16 @@ The username will be admin, the password is available in a secret called rook-ce
 
 You can execute **ceph status** in the rook-ceph/rook-ceph-tools workload in order to see the status of your cluster, and configure it in that container.
 
+I have two examples of storage type deployments you can choose from. You can also install them in parallel.
+  
 4.1-block-pool
 
-This will create a block pool inside of ceph and a provisioner storage class to automatically satisfy volume requests. 
+This will create a block pool inside of ceph and a provisioner storage class to automatically satisfy volume claims. 
 In order to set the storage class to default (and not having to assign it manually) execute :
 > kubectl patch storageclass rook-ceph-block -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 
 4.2-shared-filesystem
-
+This will create a filesystem inside of ceph. (Note you can only have one filesystem reliably work in ceph for now) 
 Out of the box, cephfs doesn't come with a provisioner.
 
 In order to bind the volume add a ephemeral via ui with the driver ceph.rook.io/rook, filesystem type ceph and the options:
